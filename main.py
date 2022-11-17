@@ -1,11 +1,11 @@
 import eventlet
 import socketio
-from server import Server
+from gamemanager import GameManager
 from Dataclasses.callback import Callback
 
 sio = socketio.Server()
 app = socketio.WSGIApp(sio)
-server = Server(sio)
+games = GameManager(sio)
 
 
 @sio.event
@@ -16,27 +16,27 @@ def connect(sid, environ):
 
 @sio.event
 def disconnect(sid):
-    server.leave_game(sid)
+    games.leave_game(sid)
     print("disconnect", sid)
 
 
 # game based events
 @sio.event
 def create(sid, data):
-    callback = server.create_game(sid)
+    callback = games.create_game(sid)
     print("create", sid, callback.toJSON())
     return callback.toJSON()
 
 
 @sio.event
 def join(sid, data):
-    callback = server.join_game(data, sid)
+    callback = games.join_game(data, sid)
     return callback.toJSON()
 
 
 @sio.event
 def leave(sid, data):
-    callback = server.leave_game(sid)
+    callback = games.leave_game(sid)
     return callback.toJSON()
 
 
@@ -46,9 +46,9 @@ def get_games(sid, data):
     ids: list[str] = []
 
     for i in range(5):
-        ids.append(server.get_random_id())
+        ids.append(games.get_random_id())
 
-    for p in server.games:
+    for p in games.games:
         ids.append(p.id)
 
     print(Callback(True, data=ids).toJSON())
@@ -60,7 +60,7 @@ def get_games(sid, data):
 def chat(sid, data):
     print("chat", sid, data)
 
-    game = server.get_player_game(sid)
+    game = games.get_player_game(sid)
     if game is not None:
         game.broadcast(data)
         return Callback(True).toJSON()
@@ -68,4 +68,4 @@ def chat(sid, data):
 
 
 if __name__ == '__main__':
-    eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
+    eventlet.wsgi.games(eventlet.listen(('', 5000)), app)

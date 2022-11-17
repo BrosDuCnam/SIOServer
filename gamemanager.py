@@ -4,7 +4,7 @@ import game
 from Dataclasses.callback import Callback
 
 
-class Server:
+class GameManager:
     games = []
 
     def __init__(self, sio):
