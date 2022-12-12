@@ -24,6 +24,7 @@ def disconnect(sid):
 @sio.event
 def create(sid, data):
     callback = server.create_game(sid)
+    callback.data = server.games[-1].id
     print("create", sid, callback.toJSON())
     return callback.toJSON()
 
@@ -31,12 +32,14 @@ def create(sid, data):
 @sio.event
 def join(sid, data):
     callback = server.join_game(data, sid)
+    print("join", sid, callback.toJSON())
     return callback.toJSON()
 
 
 @sio.event
 def leave(sid, data):
     callback = server.leave_game(sid)
+    print("leave", sid, callback.toJSON())
     return callback.toJSON()
 
 
@@ -45,13 +48,13 @@ def leave(sid, data):
 def get_games(sid, data):
     ids: list[str] = []
 
-    for i in range(5):
+    for i in range(1):
         ids.append(server.get_random_id())
 
     for p in server.games:
         ids.append(p.id)
 
-    print(Callback(True, data=ids).toJSON())
+    print("get games", Callback(True, data=ids).toJSON())
     return Callback(True, data=ids).toJSON()
 
 
@@ -68,4 +71,6 @@ def chat(sid, data):
 
 
 if __name__ == '__main__':
+    print("SERVER START")
     eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
+    print("SERVER END")
