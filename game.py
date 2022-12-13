@@ -1,5 +1,6 @@
 from enum import Enum
 from Dataclasses.callback import Callback
+from Dataclasses.throwdata import ThrowData
 
 
 class PlayerType(Enum):
@@ -68,7 +69,7 @@ class Game:
 
         return Callback(False, "Player not found in the game")
 
-    def get_player_type(self, sid) -> PlayerType | None:
+    def get_player_type(self, sid) -> PlayerType:
         """
         Function to get the player type
         :param sid: SocketID of the player
@@ -86,3 +87,9 @@ class Game:
 
     def broadcast(self, value):
         self.sio.emit('broadcast', {'message': value}, room=self.id)
+
+    def throw_object(self, throw_data: ThrowData):
+        if self.driver is None:
+            return
+
+        self.sio.emit('throw_object', throw_data.to_json())

@@ -1,7 +1,10 @@
 import eventlet
 import socketio
+from typing import List
+
 from gamemanager import GameManager
 from Dataclasses.callback import Callback
+from Dataclasses.throwdata import ThrowData
 
 sio = socketio.Server()
 app = socketio.WSGIApp(sio)
@@ -29,7 +32,8 @@ def create(sid, data):
 
 
 @sio.event
-def join(sid, data):
+def join_game(sid, data):
+    print("Try to join : ", data)
     callback = games.join_game(data, sid)
     return callback.toJSON()
 
@@ -43,7 +47,7 @@ def leave(sid, data):
 # API events
 @sio.event
 def get_games(sid, data):
-    ids: list[str] = []
+    ids: List[str] = []
 
     for i in range(5):
         ids.append(games.get_random_id())
@@ -67,5 +71,13 @@ def chat(sid, data):
     return Callback(False, "You are not in any game").toJSON()
 
 
+# Event on event throw from the cook
+@sio.event
+def on_object_thrown(sid, data):
+    game = games.get_player_game(sid)
+
+    game.throw_object(ThrowData(data))
+    return Callback(True).toJSON()
+
 if __name__ == '__main__':
-    eventlet.wsgi.games(eventlet.listen(('', 5000)), app)
+    eventlet.wsgi.server(eventlet.listen(('', 5000)), app)

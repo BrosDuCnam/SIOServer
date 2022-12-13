@@ -73,7 +73,7 @@ class GameManager:
 
         return id
 
-    def get_game(self, id: str) -> game.Game | None:
+    def get_game(self, id: str) -> game.Game:
         """
         Function to get game from an ID
         :param id: ID of the game
@@ -85,7 +85,7 @@ class GameManager:
 
         return None
 
-    def get_player_game(self, sid: str) -> game.Game | None:
+    def get_player_game(self, sid: str) -> game.Game:
         """
         Function to get game from a player
         :param sid: SocketID of the player
