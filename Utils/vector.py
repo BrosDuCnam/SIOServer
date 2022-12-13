@@ -25,6 +25,18 @@ class Vector(object):
         else:
             return arg_in_deg
 
+    @staticmethod
+    def random2D():
+        """ Returns a random 2D vector """
+        import random
+        return Vector(random.random(), random.random())
+
+    @staticmethod
+    def random3D():
+        """ Returns a random 3D vector """
+        import random
+        return Vector(random.random(), random.random(), random.random())
+
     def normalize(self):
         """ Returns a normalized unit vector """
         norm = self.norm()

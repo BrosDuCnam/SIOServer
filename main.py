@@ -79,5 +79,10 @@ def on_object_thrown(sid, data):
     game.throw_object(ThrowData(data))
     return Callback(True).toJSON()
 
+# Get random throw (for debug)
+@sio.event
+def get_random_throw_data(sid, data):
+    return Callback(True, "", ThrowData)
+
 if __name__ == '__main__':
     eventlet.wsgi.server(eventlet.listen(('', 5000)), app)

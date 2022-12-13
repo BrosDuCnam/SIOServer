@@ -15,3 +15,11 @@ class ThrowData:
         self.object_name = data["object_name"]
         self.location = data["location"]
         self.velocity = data["velocity"]
+
+    @staticmethod
+    def get_random():
+        data = ThrowData()
+        data.object_name = ""
+        data.location = Vector.random3D().normalize()
+        data.velocity = Vector.random3D().normalize()
+        return data
