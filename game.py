@@ -86,6 +86,7 @@ class Game:
         return None
 
     def broadcast(self, value):
+        print("Currently broadcast with : " + str(value))
         self.sio.emit('broadcast', {'message': value}, room=self.id)
 
     def throw_object(self, throw_data: ThrowData):
