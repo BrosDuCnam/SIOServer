@@ -98,9 +98,4 @@ if __name__ == '__main__':
     else:
         port = 5000
 
-    import socket
-
-    hostname = socket.gethostname()
-    IPAddr = socket.gethostbyname(hostname)
-
-    eventlet.wsgi.server(eventlet.listen((IPAddr, port)), app)
+    eventlet.wsgi.server(eventlet.listen(('', port)), app)
