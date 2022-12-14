@@ -1,6 +1,7 @@
 import eventlet
 import socketio
 from typing import List
+from flask import Flask
 
 from gamemanager import GameManager
 from Dataclasses.callback import Callback
@@ -9,6 +10,7 @@ from Dataclasses.throwdata import ThrowData
 sio = socketio.Server()
 app = socketio.WSGIApp(sio)
 games = GameManager(sio)
+app_flask = Flask(__name__)
 
 
 @sio.event
@@ -86,6 +88,11 @@ def get_random_throw_data(sid, data):
     game = games.get_player_game(sid)
     game.throw_object(ThrowData.get_random_throw())
     return Callback(True).toJSON()
+
+
+@app_flask.route('/')
+def index():
+    return 'hello, world'
 
 
 if __name__ == '__main__':
