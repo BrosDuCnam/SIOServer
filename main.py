@@ -7,12 +7,12 @@ from gamemanager import GameManager
 from Dataclasses.callback import Callback
 from Dataclasses.throwdata import ThrowData
 
+from flask import Flask
 
 sio = socketio.Server()
 app = socketio.WSGIApp(sio)
 games = GameManager(sio)
-
-port: int
+flask_app = Flask(__name__)
 
 @sio.event
 def connect(sid, environ):
@@ -91,10 +91,18 @@ def get_random_throw_data(sid, data):
     return Callback(True).toJSON()
 
 
+@flask_app.route('/')
+def index():
+    return 'Web App with Python Flask!'
+
+
 if __name__ == '__main__':
+    port: int
     if len(sys.argv) > 1:
         port = int(sys.argv[1])
     else:
         port = 5000
 
-    eventlet.wsgi.server(eventlet.listen(('', port)), app)
+    # eventlet.wsgi.server(eventlet.listen(('', port)), app)
+    flask_app.run(host='0.0.0.0', port=port)
+
