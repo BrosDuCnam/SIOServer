@@ -10,15 +10,17 @@ class ThrowData:
     location: Vector
     velocity: Vector
 
-    def __init__(self, data: object):
+    def __init__(self, data: object = None):
+        if data is None:
+            self.object_name = ""
+            self.location = Vector(0, 0, 0)
+            self.velocity = Vector(0, 0, 0)
+            return
+
         self.object_name = data["object_name"]
         self.location = data["location"]
         self.velocity = data["velocity"]
-
-    def __init__(self):
-        self.object_name = ""
-        self.location = Vector(0, 0, 0)
-        self.velocity = Vector(0, 0, 0)
+        return
 
     def toJSON(self):
         throwdata_json = ThrowDataJSON(self)
