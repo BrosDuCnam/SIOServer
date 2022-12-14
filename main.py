@@ -98,4 +98,4 @@ if __name__ == '__main__':
         port = 5000
 
     print("Starting server on port", port)
-    eventlet.wsgi.server(eventlet.listen(('vwm-sioserver.herokuapp.com', port)), app)
+    eventlet.wsgi.server(eventlet.listen(('', port)), app)
