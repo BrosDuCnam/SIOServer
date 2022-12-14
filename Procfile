@@ -1,1 +1,1 @@
-web: python main.py $PORT
+web: gunicorn -k eventlet -w 1 module:app $PORT
