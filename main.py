@@ -74,6 +74,9 @@ def chat(sid, data):
 def on_object_thrown(sid, data):
     game = games.get_player_game(sid)
 
+    if game is None:
+        return Callback(False).toJSON()
+
     # print the data
     print("on_object_thrown", sid, data)
 
