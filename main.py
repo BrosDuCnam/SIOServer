@@ -87,7 +87,7 @@ def on_object_thrown(sid, data):
 @sio.event
 def get_random_throw_data(sid, data):
     game = games.get_player_game(sid)
-    game.throw_object(ThrowData.get_random_throw())
+    game.throw_object(ThrowData.get_random())
     return Callback(True).toJSON()
 
 

@@ -1,1 +1,1 @@
-web: python main.py $PORT
+web: gunicorn -k gevent -w 1 module:app
