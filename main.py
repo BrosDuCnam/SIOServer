@@ -50,9 +50,6 @@ def leave(sid, data):
 def get_games(sid, data):
     ids: List[str] = []
 
-    for i in range(5):
-        ids.append(games.get_random_id())
-
     for p in games.games:
         ids.append(p.id)
 
