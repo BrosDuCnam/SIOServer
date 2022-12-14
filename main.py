@@ -85,12 +85,11 @@ def on_object_thrown(sid, data):
 @sio.event
 def get_random_throw_data(sid, data):
     game = games.get_player_game(sid)
+    if game is None:
+        return Callback(False).toJSON()
     game.throw_object(ThrowData.get_random())
     return Callback(True).toJSON()
 
 
 if __name__ == '__main__':
-    import socket
-    hostname = socket.gethostname()
-    IPAddr = socket.gethostbyname(hostname)
-    eventlet.wsgi.server(eventlet.listen((IPAddr, 5000)), app)
+    eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
