@@ -97,5 +97,4 @@ if __name__ == '__main__':
     else:
         port = 5000
 
-    print("Starting server on port", port)
     eventlet.wsgi.server(eventlet.listen(('', port)), app)
