@@ -1,3 +1,4 @@
+import sys
 import eventlet
 import socketio
 from typing import List
@@ -5,16 +6,13 @@ from typing import List
 from gamemanager import GameManager
 from Dataclasses.callback import Callback
 from Dataclasses.throwdata import ThrowData
-import os
+
 
 sio = socketio.Server()
 app = socketio.WSGIApp(sio)
 games = GameManager(sio)
-ON_HEROKU = os.environ.get('ON_HEROKU')
 
 port: int
-
-
 
 @sio.event
 def connect(sid, environ):
@@ -94,11 +92,10 @@ def get_random_throw_data(sid, data):
 
 
 if __name__ == '__main__':
-    if ON_HEROKU:
-        # get the heroku port
-        port = int(os.environ.get('PORT', 17995))  # as per OP comments default is 17995
+    if len(sys.argv) > 1:
+        port = int(sys.argv[1])
     else:
-        port = 3000
+        port = 5000
 
     print("Starting server on port", port)
     eventlet.wsgi.server(eventlet.listen(('', port)), app)
