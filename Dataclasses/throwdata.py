@@ -18,8 +18,8 @@ class ThrowData:
             return
 
         self.object_name = data["object_name"]
-        self.location = data["location"]
-        self.velocity = data["velocity"]
+        self.location = Vector(*data["location"])
+        self.velocity = Vector(*data["velocity"])
         return
 
     def toJSON(self):
