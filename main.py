@@ -1,7 +1,6 @@
 import eventlet
 import socketio
 from typing import List
-from flask import Flask
 
 from gamemanager import GameManager
 from Dataclasses.callback import Callback
@@ -10,7 +9,6 @@ from Dataclasses.throwdata import ThrowData
 sio = socketio.Server()
 app = socketio.WSGIApp(sio)
 games = GameManager(sio)
-app_flask = Flask(__name__)
 
 
 @sio.event
