@@ -5,10 +5,15 @@ from typing import List
 from gamemanager import GameManager
 from Dataclasses.callback import Callback
 from Dataclasses.throwdata import ThrowData
+import os
 
 sio = socketio.Server()
 app = socketio.WSGIApp(sio)
 games = GameManager(sio)
+ON_HEROKU = os.environ.get('ON_HEROKU')
+
+port: int
+
 
 
 @sio.event
@@ -88,10 +93,12 @@ def get_random_throw_data(sid, data):
     return Callback(True).toJSON()
 
 
-@app_flask.route('/')
-def index():
-    return 'hello, world'
-
-
 if __name__ == '__main__':
-    eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
+    if ON_HEROKU:
+        # get the heroku port
+        port = int(os.environ.get('PORT', 17995))  # as per OP comments default is 17995
+    else:
+        port = 3000
+
+    print("Starting server on port", port)
+    eventlet.wsgi.server(eventlet.listen(('', port)), app)
