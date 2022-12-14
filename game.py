@@ -93,4 +93,4 @@ class Game:
         if self.driver is None:
             return
 
-        self.sio.emit('throw_object', throw_data.to_json())
+        self.sio.emit('throw_object', throw_data.toJSON())
