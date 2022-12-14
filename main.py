@@ -27,6 +27,7 @@ def disconnect(sid):
 @sio.event
 def create(sid, data):
     callback = games.create_game(sid)
+    callback.data = games.games[-1].id
     print("create", sid, callback.toJSON())
     return callback.toJSON()
 
@@ -87,4 +88,7 @@ def get_random_throw_data(sid, data):
     return Callback(True).toJSON()
 
 if __name__ == '__main__':
-    eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
+    import socket
+    hostname = socket.gethostname()
+    IPAddr = socket.gethostbyname(hostname)
+    eventlet.wsgi.server(eventlet.listen((IPAddr, 5000)), app)
