@@ -94,5 +94,10 @@ def get_random_throw_data(sid, data):
     return Callback(True).toJSON()
 
 
+@sio.event
+def ping(sid, data):
+    return Callback(True, "", "pong !").toJSON()
+
+
 if __name__ == '__main__':
     eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
