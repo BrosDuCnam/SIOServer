@@ -37,6 +37,7 @@ def get_commit_data() -> dict[str, str | int]:
 def log(*message):
     if len(message) == 0:
         return
+    print(*message)
 
     data: dict[str, str | int] = get_commit_data()
 
