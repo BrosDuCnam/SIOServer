@@ -42,7 +42,7 @@ webhooks: dict[str, list: object] = {
             {
                 "title": "Log",
                 "description": "{log}",
-                "color": 16776960,
+                "color": 16777215,
                 "fields": [
                     {"name": "commit : {commit_short_id}", "value": "{commit_name}"},
                     {"name": "branch :", "value": "{branch}"}
