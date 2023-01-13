@@ -5,6 +5,7 @@ from typing import List
 from gamemanager import GameManager
 from Dataclasses.callback import Callback
 from Dataclasses.throwdata import ThrowData
+from Utils.Logger import log
 
 sio = socketio.Server()
 app = socketio.WSGIApp(sio)
@@ -14,13 +15,13 @@ games = GameManager(sio)
 @sio.event
 def connect(sid, environ):
     sio.save_session(sid, {'type': environ["HTTP_TYPE"].lower()})
-    print("connect", sid)
+    log("connect", sid)
 
 
 @sio.event
 def disconnect(sid):
     games.leave_game(sid)
-    print("disconnect", sid)
+    log("disconnect", sid)
 
 
 # game based events
@@ -28,13 +29,13 @@ def disconnect(sid):
 def create(sid, data):
     callback = games.create_game(sid)
     callback.data = games.games[-1].id
-    print("create", sid, callback.toJSON())
+    log("create", sid, callback.toJSON())
     return callback.toJSON()
 
 
 @sio.event
 def join_game(sid, data):
-    print("Try to join : ", data)
+    log("Try to join : ", data)
     callback = games.join_game(data, sid)
     return callback.toJSON()
 
@@ -53,14 +54,14 @@ def get_games(sid, data):
     for p in games.games:
         ids.append(p.id)
 
-    print(Callback(True, data=ids).toJSON())
+    log(Callback(True, data=ids).toJSON())
     return Callback(True, data=ids).toJSON()
 
 
 # Game events
 @sio.event
 def chat(sid, data):
-    print("chat", sid, data)
+    log("chat", sid, data)
 
     game = games.get_player_game(sid)
     if game is not None:
@@ -78,7 +79,7 @@ def on_object_thrown(sid, data):
         return Callback(False).toJSON()
 
     # print the data
-    print("on_object_thrown", sid, data)
+    log("on_object_thrown", sid, data)
 
     game.throw_object(ThrowData(data))
     return Callback(True).toJSON()
@@ -100,4 +101,6 @@ def ping(sid, data):
 
 
 if __name__ == '__main__':
+    log("Starting")
+
     eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
