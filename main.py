@@ -6,7 +6,7 @@ from typing import List
 from gamemanager import GameManager
 from Dataclasses.callback import Callback
 from Dataclasses.throwdata import ThrowData
-from Utils.Logger import log
+from Utils.logger import log
 
 
 sio = socketio.Server()

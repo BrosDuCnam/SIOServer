@@ -1,6 +1,6 @@
-import Dataclasses.Webhooks as Webhooks
+import Dataclasses.webhooks as Webhooks
 import pandas as pd
-import Dataclasses.Webhooks as Webhooks
+import Dataclasses.webhooks as Webhooks
 
 from discordwebhook import Discord
 
