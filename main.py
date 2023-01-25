@@ -1,6 +1,7 @@
 import sys
 import eventlet
 import socketio
+import Dataclasses.order as order
 from typing import List
 
 from gamemanager import GameManager
@@ -104,5 +105,7 @@ def ping(sid, data):
 
 if __name__ == '__main__':
     log("started")
+    log(order.get_order())
+
 
     eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
