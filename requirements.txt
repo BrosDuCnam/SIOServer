@@ -4,3 +4,4 @@ dataclasses-json~=0.5.7
 discordwebhook~=1.0.3
 pygit2~=1.11.1
 pandas~=1.5.2
+gunicorn~=20.1.0

@@ -1,6 +1,6 @@
+import sys
 import eventlet
 import socketio
-import atexit
 from typing import List
 
 from gamemanager import GameManager
@@ -8,13 +8,10 @@ from Dataclasses.callback import Callback
 from Dataclasses.throwdata import ThrowData
 from Utils.Logger import log
 
+
 sio = socketio.Server()
 app = socketio.WSGIApp(sio)
 games = GameManager(sio)
-
-def exit_handler():
-    log("stopped")
-
 
 
 @sio.event
@@ -107,6 +104,5 @@ def ping(sid, data):
 
 if __name__ == '__main__':
     log("started")
-    atexit.register(exit_handler)
 
     eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
