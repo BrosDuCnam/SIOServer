@@ -1,13 +1,13 @@
+import os
+
 import Dataclasses.webhooks as Webhooks
 import pandas as pd
-import Dataclasses.webhooks as Webhooks
 
 from discordwebhook import Discord
 
 from pygit2 import Repository, Commit
 
-discord = Discord(
-    url="https://discord.com/api/webhooks/1063555763047501845/PXyAjsTyDs4DKlWApJq6-374z3HyX-xsjfulEGCN65f8GOyNP0Tn3gN1iJ-_G3XbBrWf")
+discord = Discord(os.getenv("OPEN_AI_KEY"))
 
 
 def get_commit_data() -> dict[str, str | int]:
