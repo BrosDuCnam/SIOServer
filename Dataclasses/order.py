@@ -125,7 +125,7 @@ class Order:
         """Format a meal with personality and pnj
 
         :param order: order to format
-        :return: formatted meal.
+        :return: formatted meal
         """
 
         value: str = f"Plat: {self.meal}\n"
