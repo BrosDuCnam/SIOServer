@@ -1,6 +1,11 @@
+import random
 from enum import Enum
 from Dataclasses.callback import Callback
 from Dataclasses.throwdata import ThrowData
+from Dataclasses.order import Order
+
+from Utils.logger import log
+from apscheduler.schedulers.background import BackgroundScheduler
 
 
 class PlayerType(Enum):
@@ -16,6 +21,10 @@ class Game:
         self.driver = None
 
         self.id = id
+
+        scheduler = BackgroundScheduler()
+        scheduler.add_job(self.get_new_order(), 'interval', seconds=random.randint(30, 60))
+        scheduler.start()
 
     def add_player(self, sid: str) -> Callback:
         """
@@ -84,6 +93,12 @@ class Game:
             return PlayerType.Driver
 
         return None
+
+    def get_new_order(self):
+        order: Order = Order()
+
+        log("New order for " + self.id + " : " + str(order.to_dict()))
+        self.sio.emit('new_order', {'message': order.to_dict()}, room=self.id)
 
     def broadcast(self, value):
         log("Currently broadcast with : " + str(value))

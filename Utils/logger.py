@@ -4,9 +4,10 @@ import Dataclasses.webhooks as Webhooks
 import pandas as pd
 
 from discordwebhook import Discord
-
+from dotenv import load_dotenv
 from pygit2 import Repository
 
+load_dotenv()
 discord = Discord(url=os.getenv("DISCORD_WEBHOOK_URL"))
 
 

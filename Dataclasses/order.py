@@ -1,5 +1,8 @@
 import random
+
 from dotenv import load_dotenv
+from Utils.logger import log
+
 import os
 import openai
 
@@ -160,3 +163,21 @@ class Order:
             self.sentence = response["choices"][0]["text"]
 
         return self.sentence
+
+    def get_ingredients(self) -> list[str]:
+        for meal in meals:
+            if meal["name"] == self.meal:
+                return meal["meals"]
+        return []
+
+    def to_dict(self) -> dict[str, str | list[str]]:
+        value: dict[str, str | list[str]] = {
+            "meal": self.meal,
+            "ingredients": self.get_ingredients(),
+            "pnj": self.pnj,
+            "personality": self.personality,
+
+            "sentence": self.get_sentence(),
+        }
+
+        return value

@@ -9,7 +9,6 @@ from Dataclasses.callback import Callback
 from Dataclasses.throwdata import ThrowData
 from Utils.logger import log
 
-
 sio = socketio.Server()
 app = socketio.WSGIApp(sio)
 games = GameManager(sio)
@@ -88,6 +87,15 @@ def on_object_thrown(sid, data):
     return Callback(True).toJSON()
 
 
+@sio.event
+def get_order(sid, data):
+    game = games.get_player_game(sid)
+    if game is None:
+        return Callback(False).toJSON()
+    game.get_new_order()
+    return Callback(True).toJSON()
+
+
 # Get random throw (for debug)
 @sio.event
 def get_random_throw_data(sid, data):
@@ -105,6 +113,6 @@ def ping(sid, data):
 
 if __name__ == '__main__':
     log("started")
-    log(order.Order().get_sentence())
+    # log(order.Order().to_dict())
 
     eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
