@@ -48,6 +48,7 @@ class Game:
 
         if success:
             self.sio.enter_room(sid, self.id)
+            self.sio.emit('join_game', {'message': self.id}, room=sid)
             return Callback(True)
 
         return Callback(False, "The game is full")
@@ -74,6 +75,7 @@ class Game:
 
         if success:
             self.sio.leave_room(sid, self.id)
+            self.sio.emit('leave_game', {'message': self.id}, room=sid)
             return Callback(True)
 
         return Callback(False, "Player not found in the game")
