@@ -105,7 +105,6 @@ def ping(sid, data):
 
 if __name__ == '__main__':
     log("started")
-    log(order.get_order())
-
+    log(order.Order().get_sentence())
 
     eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
