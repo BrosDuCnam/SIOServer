@@ -58,7 +58,7 @@ def webhook_format(webhook_name: str, data: dict[str, str]) -> list[dict[str, st
 
     :param webhook_name: name of the webhook
     :param data: data to format the webhook
-    :return: formatted webhook
+    :return: formatted webhook.
     """
 
     webhook = webhooks[webhook_name]
