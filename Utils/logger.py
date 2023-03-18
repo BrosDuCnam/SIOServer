@@ -5,7 +5,7 @@ import pandas as pd
 
 from discordwebhook import Discord
 
-from pygit2 import Repository, Commit
+from pygit2 import Repository
 
 discord = Discord(url=os.getenv("DISCORD_WEBHOOK_URL"))
 
