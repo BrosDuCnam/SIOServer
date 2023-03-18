@@ -93,7 +93,7 @@ def get_order(sid, data):
     if game is None:
         return Callback(False).toJSON()
     game.get_new_order()
-    return Callback(True).toJSON()
+    return Callback(True, order.Order().to_dict()).toJSON()
 
 
 # Get random throw (for debug)
