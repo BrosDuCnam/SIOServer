@@ -7,7 +7,7 @@ from discordwebhook import Discord
 
 from pygit2 import Repository, Commit
 
-discord = Discord(os.getenv("OPEN_AI_KEY"))
+discord = Discord(url=os.getenv("DISCORD_WEBHOOK_URL"))
 
 
 def get_commit_data() -> dict[str, str | int]:
