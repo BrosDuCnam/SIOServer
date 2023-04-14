@@ -45,6 +45,7 @@ pnjs: list[str] = [
 
 meals: list[dict[str, list[str] | str]] = [
     {
+        "type": "pizza",
         "name": "Pizza 4 fromage",
         "meals": [
             "Fromage de chèvre",
@@ -54,6 +55,7 @@ meals: list[dict[str, list[str] | str]] = [
         ]
     },
     {
+        "type": "pizza",
         "name": "Pizza 4 saisons",
         "meals": [
             "Jambon",
@@ -62,6 +64,7 @@ meals: list[dict[str, list[str] | str]] = [
         ]
     },
     {
+        "type": "pizza",
         "name": "Pizza pepperoni",
         "meals": [
             "Pepperoni",
@@ -69,7 +72,8 @@ meals: list[dict[str, list[str] | str]] = [
         ]
     },
     {
-        "name": "Humburger",
+        "type": "hamburger",
+        "name": "Hamburger",
         "meals": [
             "Steak",
             "Salade",
@@ -78,7 +82,8 @@ meals: list[dict[str, list[str] | str]] = [
         ]
     },
     {
-        "name": "Humburger au fromage",
+        "type": "hamburger",
+        "name": "Hamburger au fromage",
         "meals": [
             "Steak",
             "cheddar",
@@ -94,12 +99,16 @@ def is_empty_or_null(s):
 
 
 class Order:
+    id: int
     meal: str
     personality: str
     pnj: str
     sentence: str = None
 
-    def __init__(self, meal: str = None, personality: str = None, pnj: str = None):
+    def __init__(self, id: int = -1, meal: str = None, personality: str = None, pnj: str = None):
+
+        self.id = id
+
         if is_empty_or_null(meal):
             self.meal = random.choice(meals)["name"]
         else:
@@ -128,6 +137,7 @@ class Order:
         :return: formatted meal
         """
 
+        value: str = f"id: {self.id}\n"
         value: str = f"Plat: {self.meal}\n"
 
         for recipe in meals:
@@ -170,8 +180,16 @@ class Order:
                 return meal["meals"]
         return []
 
+    def get_type(self) -> str:
+        for meal in meals:
+            if meal["name"] == self.meal:
+                return meal["type"]
+        return ""
+
     def to_dict(self) -> dict[str, str | list[str]]:
         value: dict[str, str | list[str]] = {
+            "id": self.id,
+            "type": self.get_type(),
             "meal": self.meal,
             "ingredients": self.get_ingredients(),
             "pnj": self.pnj,

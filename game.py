@@ -19,11 +19,12 @@ class Game:
         self.sio = sio
         self.cook = None
         self.driver = None
+        self.order_id = 0
 
         self.id = id
 
         self.scheduler = BackgroundScheduler()
-        self.scheduler.add_job(self.get_new_order, 'interval', seconds=random.randint(30, 60))
+        self.scheduler.add_job(self.get_new_order, 'interval', seconds=5)#random.randint(30, 60))
         self.scheduler.start()
 
     def add_player(self, sid: str) -> Callback:
@@ -100,10 +101,14 @@ class Game:
         return None
 
     def get_new_order(self):
-        order: Order = Order()
+        self.order_id += 1
+
+        order: Order = Order(self.order_id)
 
         log("New order for " + self.id + " : " + str(order.to_dict()))
         self.sio.emit('new_order', {'message': order.to_dict()}, room=self.id)
+
+        return order.to_dict()
 
     def broadcast(self, value):
         log("Currently broadcast with : " + str(value))

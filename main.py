@@ -1,5 +1,7 @@
 import sys
-import eventlet
+#import eventlet
+from gevent import pywsgi
+from geventwebsocket.handler import WebSocketHandler
 import socketio
 import Dataclasses.order as order
 from typing import List
@@ -9,10 +11,9 @@ from Dataclasses.callback import Callback
 from Dataclasses.throwdata import ThrowData
 from Utils.logger import log
 
-sio = socketio.Server()
+sio = socketio.Server(async_mode='gevent')
 app = socketio.WSGIApp(sio)
 games = GameManager(sio)
-
 
 @sio.event
 def connect(sid, environ):
@@ -32,6 +33,7 @@ def create(sid, data):
     callback = games.create_game(sid)
     callback.data = games.games[-1].id
     log("create", sid, callback.toJSON())
+
     return callback.toJSON()
 
 
@@ -89,11 +91,14 @@ def on_object_thrown(sid, data):
 
 @sio.event
 def get_order(sid, data):
+    log("get order", sid, data)
+
     game = games.get_player_game(sid)
     if game is None:
         return Callback(False).toJSON()
+
     game.get_new_order()
-    return Callback(True, order.Order().to_dict()).toJSON()
+    return Callback(True).toJSON()
 
 
 # Get random throw (for debug)
@@ -115,4 +120,5 @@ if __name__ == '__main__':
     log("started")
     # log(order.Order().to_dict())
 
-    eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
+    pywsgi.WSGIServer(('', 5000), app, handler_class=WebSocketHandler).serve_forever()
+    #eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
