@@ -1,5 +1,4 @@
 import sys
-#import eventlet
 from gevent import pywsgi
 from geventwebsocket.handler import WebSocketHandler
 import socketio
