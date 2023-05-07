@@ -5,6 +5,8 @@ from Dataclasses.throwdata import ThrowData
 from Dataclasses.order import Order
 
 from Utils.logger import log
+from Utils.vector import Vector
+
 from apscheduler.schedulers.background import BackgroundScheduler
 
 
@@ -20,6 +22,7 @@ class Game:
         self.cook = None
         self.driver = None
         self.order_id = 0
+        self.position = Vector(0, 0)
 
         self.id = id
 
@@ -119,3 +122,7 @@ class Game:
             return
 
         self.sio.emit('throw_object', throw_data.toJSON())
+
+    def update_position(self, position: Vector):
+        self.position = position
+        self.sio.emit('update_position', {'message': position.to_dict()}, room=self.id)
