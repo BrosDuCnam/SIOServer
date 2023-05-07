@@ -29,7 +29,7 @@ class Game:
 
     def add_player(self, sid: str) -> Callback:
         """
-        Function to add a player to the game
+        Function to add a player to the game.
         :param sid: SocketID of the player
         :return: the callback to show success or error and message
         """
