@@ -5,6 +5,8 @@ from Dataclasses.throwdata import ThrowData
 from Dataclasses.order import Order
 
 from Utils.logger import log
+from Utils.vector import Vector
+
 from apscheduler.schedulers.background import BackgroundScheduler
 
 
@@ -21,12 +23,14 @@ class Game:
         self.sio = sio
         self.cook = None
         self.driver = None
+        self.order_id = 0
+        self.position = Vector(0, 0)
 
         self.id = id
 
-        scheduler = BackgroundScheduler()
-        scheduler.add_job(self.get_new_order(), 'interval', seconds=random.randint(30, 60))
-        scheduler.start()
+        self.scheduler = BackgroundScheduler()
+        self.scheduler.add_job(self.get_new_order, 'interval', seconds=5)#random.randint(30, 60))
+        self.scheduler.start()
 
     def add_player(self, sid: str) -> Callback:
         """
@@ -50,6 +54,7 @@ class Game:
 
         if success:
             self.sio.enter_room(sid, self.id)
+            self.sio.emit('join_game', {'message': self.id}, room=sid)
             return Callback(True)
 
         return Callback(False, "The game is full")
@@ -75,7 +80,11 @@ class Game:
             success = True
 
         if success:
+            if self.driver is None and self.cook is None:
+                self.scheduler.shutdown()
+
             self.sio.leave_room(sid, self.id)
+            self.sio.emit('leave_game', {'message': self.id}, room=sid)
             return Callback(True)
 
         return Callback(False, "Player not found in the game")
@@ -97,16 +106,22 @@ class Game:
         return None
 
     def get_new_order(self):
-        order: Order = Order()
+        self.order_id += 1
+
+        order: Order = Order(self.order_id)
 
         log("New order for " + self.id + " : " + str(order.to_dict()))
         self.sio.emit('new_order', {'message': order.to_dict()}, room=self.id)
 
+        return order.to_dict()
+
+      
     def set_kitchen_pos(self, pos):
         self.kitchen_pos = pos
 
         # Send kitchen position to players
         self.sio.emit('kitchen_pos', {'message': self.kitchen_pos}, room=self.id)
+
 
     def broadcast(self, value):
         log("Currently broadcast with : " + str(value))
@@ -117,3 +132,7 @@ class Game:
             return
 
         self.sio.emit('throw_object', throw_data.toJSON())
+
+    def update_position(self, position: Vector):
+        self.position = position
+        self.sio.emit('update_position', {'message': position.to_dict()}, room=self.id)
