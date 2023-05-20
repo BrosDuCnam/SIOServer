@@ -111,11 +111,13 @@ def get_random_throw_data(sid, data):
 
 
 @sio.event
-def update_position(sid, data):
+def set_kitchen_pos(sid, data):
     game = games.get_player_game(sid)
     if game is None:
         return Callback(False).toJSON()
-    game.update_position(data["location"])
+    game.set_kitchen_pos(data)
+    log("set_kitchen_pos", data)
+
     return Callback(True).toJSON()
 
 

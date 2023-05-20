@@ -17,6 +17,8 @@ class PlayerType(Enum):
 
 class Game:
 
+    kitchen_pos = (0, 0, 0)
+
     def __init__(self, sio, id):
         self.sio = sio
         self.cook = None
@@ -112,6 +114,14 @@ class Game:
         self.sio.emit('new_order', {'message': order.to_dict()}, room=self.id)
 
         return order.to_dict()
+
+      
+    def set_kitchen_pos(self, pos):
+        self.kitchen_pos = pos
+
+        # Send kitchen position to players
+        self.sio.emit('kitchen_pos', {'message': self.kitchen_pos}, room=self.id)
+
 
     def broadcast(self, value):
         log("Currently broadcast with : " + str(value))
