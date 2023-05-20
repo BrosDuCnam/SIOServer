@@ -16,7 +16,6 @@ class PlayerType(Enum):
 
 
 class Game:
-
     kitchen_pos = (0, 0, 0)
 
     def __init__(self, sio, id):
@@ -24,12 +23,11 @@ class Game:
         self.cook = None
         self.driver = None
         self.order_id = 0
-        self.position = Vector(0, 0)
 
         self.id = id
 
         self.scheduler = BackgroundScheduler()
-        self.scheduler.add_job(self.get_new_order, 'interval', seconds=5)#random.randint(30, 60))
+        self.scheduler.add_job(self.get_new_order, 'interval', seconds=5)  # random.randint(30, 60))
         self.scheduler.start()
 
     def add_player(self, sid: str) -> Callback:
@@ -115,13 +113,11 @@ class Game:
 
         return order.to_dict()
 
-      
     def set_kitchen_pos(self, pos):
         self.kitchen_pos = pos
 
         # Send kitchen position to players
         self.sio.emit('kitchen_pos', {'message': self.kitchen_pos}, room=self.id)
-
 
     def broadcast(self, value):
         log("Currently broadcast with : " + str(value))
@@ -132,7 +128,3 @@ class Game:
             return
 
         self.sio.emit('throw_object', throw_data.toJSON())
-
-    def update_position(self, position: Vector):
-        self.position = position
-        self.sio.emit('update_position', {'message': position.to_dict()}, room=self.id)
