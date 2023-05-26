@@ -27,10 +27,10 @@ class Game:
         self.id = id
 
         self.scheduler = BackgroundScheduler()
-        self.scheduler.add_job(self.get_new_order, 'interval', seconds=random.randint(60, 120))
+        self.scheduler.add_job(self.get_new_order, 'interval', seconds=random.randint(30, 60))
         self.scheduler.start()
 
-        self.get_new_order() # get the first order
+        self.get_new_order()  # get the first order
 
     def add_player(self, sid: str) -> Callback:
         """
