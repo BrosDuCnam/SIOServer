@@ -57,6 +57,15 @@ def get_games(sid, data):
     for p in games.games:
         ids.append(p.id)
 
+    # filter by available games (if the sender if a cook get only games with no cook)
+    if sio.get_session(sid)['type'] == "cook":
+        ids = [x for x in ids if games.get_game(x).cook is None]
+    if sio.get_session(sid)['type'] == "driver":
+        ids = [x for x in ids if games.get_game(x).driver is None]
+
+    # remove the sender game
+    ids = [x for x in ids if games.get_player_game(sid) is None or x != games.get_player_game(sid).id]
+
     log(Callback(True, data=ids).toJSON())
     return Callback(True, data=ids).toJSON()
 
