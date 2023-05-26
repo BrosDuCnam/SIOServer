@@ -30,8 +30,6 @@ class Game:
         self.scheduler.add_job(self.get_new_order, 'interval', seconds=random.randint(30, 60))
         self.scheduler.start()
 
-        self.get_new_order()  # get the first order
-
     def add_player(self, sid: str) -> Callback:
         """
         Function to add a player to the game
@@ -55,6 +53,11 @@ class Game:
         if success:
             self.sio.enter_room(sid, self.id)
             self.sio.emit('join_game', {'message': self.id}, room=sid)
+
+            # if it's the first player, get new order
+            if self.driver is not None and self.cook is not None:
+                self.get_new_order()
+
             return Callback(True)
 
         return Callback(False, "The game is full")
