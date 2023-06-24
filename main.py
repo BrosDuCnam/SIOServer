@@ -15,6 +15,8 @@ sio = socketio.Server(async_mode='gevent')
 app = socketio.WSGIApp(sio)
 games = GameManager(sio)
 
+# region network management
+
 @sio.event
 def connect(sid, environ):
     sio.save_session(sid, {'type': environ["HTTP_TYPE"].lower()})
@@ -26,6 +28,9 @@ def disconnect(sid):
     games.leave_game(sid)
     log("disconnect", sid)
 
+# endregion network management
+
+# region party management
 
 # game based events
 @sio.event
@@ -61,6 +66,7 @@ def get_games(sid, data):
     log(Callback(True, data=ids).toJSON())
     return Callback(True, data=ids).toJSON()
 
+# endregion party management
 
 # Game events
 @sio.event
