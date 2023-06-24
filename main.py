@@ -1,5 +1,4 @@
 import sys
-#import eventlet
 from gevent import pywsgi
 from geventwebsocket.handler import WebSocketHandler
 import socketio
@@ -114,6 +113,17 @@ def get_random_throw_data(sid, data):
     if game is None:
         return Callback(False).toJSON()
     game.throw_object(ThrowData.get_random())
+    return Callback(True).toJSON()
+
+
+@sio.event
+def set_kitchen_pos(sid, data):
+    game = games.get_player_game(sid)
+    if game is None:
+        return Callback(False).toJSON()
+    game.set_kitchen_pos(data)
+    log("set_kitchen_pos", data)
+
     return Callback(True).toJSON()
 
 
