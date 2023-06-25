@@ -16,13 +16,13 @@ class PlayerType(Enum):
 
 
 class Game:
-    kitchen_pos = (0, 0, 0)
 
     def __init__(self, sio, id):
         self.sio = sio
         self.cook = None
         self.driver = None
         self.order_id = 0
+        self.score = 0
 
         self.id = id
 
@@ -133,3 +133,10 @@ class Game:
             return
 
         self.sio.emit('throw_object', throw_data.toJSON())
+
+    def add_score(self, score):
+        self.score += score
+        self.score_updated()
+
+    def score_updated(self):
+        self.sio.emit('score_updated', {'message': self.score}, room=self.id)

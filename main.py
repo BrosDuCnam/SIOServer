@@ -131,6 +131,15 @@ def set_kitchen_pos(sid, data):
 
 
 @sio.event
+def add_score(sid, data):
+    game = games.get_player_game(sid)
+    if game is None:
+        return Callback(False).toJSON()
+    score: int = data["score"]
+    game.add_score(score)
+    return Callback(True).toJSON()
+
+@sio.event
 def ping(sid, data):
     return Callback(True, "", "pong !").toJSON()
 
