@@ -139,6 +139,15 @@ def add_score(sid, data):
     game.add_score(score)
     return Callback(True).toJSON()
 
+
+@sio.event
+def toggle_horn(sid, data):
+    game = games.get_player_game(sid)
+    if game is None:
+        return Callback(False).toJSON()
+    game.toggle_horn(data["state"])
+    return Callback(True).toJSON()
+
 @sio.event
 def ping(sid, data):
     return Callback(True, "", "pong !").toJSON()

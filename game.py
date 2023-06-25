@@ -140,3 +140,7 @@ class Game:
 
     def score_updated(self):
         self.sio.emit('score_updated', {'message': self.score}, room=self.id)
+
+    def toggle_horn(self, state):
+        self.sio.emit('toggle_horn', {'message': state}, room=self.id)
+        pass
