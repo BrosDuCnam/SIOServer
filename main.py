@@ -14,6 +14,7 @@ sio = socketio.Server(async_mode='gevent')
 app = socketio.WSGIApp(sio)
 games = GameManager(sio)
 
+
 @sio.event
 def connect(sid, environ):
     sio.save_session(sid, {'type': environ["HTTP_TYPE"].lower()})
@@ -148,6 +149,16 @@ def toggle_horn(sid, data):
     game.toggle_horn(data["state"])
     return Callback(True).toJSON()
 
+
+@sio.event
+def apply_physic(sid, data):
+    game = games.get_player_game(sid)
+    if game is None:
+        return Callback(False).toJSON()
+    game.apply_physic(data)
+    return Callback(True).toJSON()
+
+
 @sio.event
 def ping(sid, data):
     return Callback(True, "", "pong !").toJSON()
@@ -156,6 +167,6 @@ def ping(sid, data):
 if __name__ == '__main__':
     log("started")
     # log(order.Order().to_dict())
- 
+
     pywsgi.WSGIServer(('', 5000), app, handler_class=WebSocketHandler).serve_forever()
-    #eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
+    # eventlet.wsgi.server(eventlet.listen(('', 5000)), app)

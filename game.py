@@ -119,10 +119,9 @@ class Game:
         return order.to_dict()
 
     def set_kitchen_pos(self, pos):
-        self.kitchen_pos = pos
 
         # Send kitchen position to players
-        self.sio.emit('kitchen_pos', {'message': self.kitchen_pos}, room=self.id)
+        self.sio.emit('kitchen_pos', {'message': pos}, room=self.id)
 
     def broadcast(self, value):
         log("Currently broadcast with : " + str(value))
@@ -143,4 +142,8 @@ class Game:
 
     def toggle_horn(self, state):
         self.sio.emit('toggle_horn', {'message': state}, room=self.id)
+        pass
+
+    def apply_physic(self, vector):
+        self.sio.emit('apply_physic', {'message': vector}, room=self.id)
         pass
