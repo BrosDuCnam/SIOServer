@@ -28,12 +28,10 @@ personalities: list[str] = [
 pnjs: list[str] = [
     "Pirate",
     "Francait avec l'accent anglais",
-    "Francais avec un accent espagnol",
     "Francais avec un accent ch'ti",
     "Allemand qui parle un peu francais",
     "Francais avec un accent du sud",
     "Francais de Paris",
-    "Francais avec un accent arabe",
     "Poisson",
     "Homer Simpson",
     "Président de la république",
@@ -45,52 +43,44 @@ pnjs: list[str] = [
 
 meals: list[dict[str, list[str] | str]] = [
     {
-        "type": "pizza",
-        "name": "Pizza 4 fromage",
-        "meals": [
-            "Fromage de chèvre",
-            "Mozzarella",
-            "Parmesan",
-            "Emmental",
-        ]
-    },
-    {
-        "type": "pizza",
-        "name": "Pizza 4 saisons",
-        "meals": [
-            "Jambon",
-            "Mozzarella",
-            "Champignons",
-        ]
-    },
-    {
-        "type": "pizza",
-        "name": "Pizza pepperoni",
-        "meals": [
-            "Pepperoni",
-            "Mozzarella",
-        ]
-    },
-    {
         "type": "hamburger",
-        "name": "Hamburger",
+        "name": "Hamburger simple",
         "meals": [
-            "Steak",
-            "Salade",
-            "Tomate",
-            "Oignon",
+            "steak"
         ]
     },
     {
         "type": "hamburger",
         "name": "Hamburger au fromage",
         "meals": [
-            "Steak",
-            "cheddar",
-            "fromage à raclette",
-            "Salade",
+            "steak",
+            "fromage"
         ]
     },
+    {
+        "type": "hamburger",
+        "name": "Double Hamburger",
+        "meals": [
+            "steak",
+            "fromage",
+            "steak"
+            "beacon"
+        ]
+    },
+    {
+        "type": "hamburger",
+        "name": "Le monstre",
+        "meals": [
+            "steak",
+            "fromage",
+            "steak",
+            "fromage",
+            "steak",
+            "fromage",
+            "steak",
+        ]
+    },
+
 ]
 
 
