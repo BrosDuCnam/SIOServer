@@ -27,7 +27,7 @@ class Game:
         self.id = id
 
         self.scheduler = BackgroundScheduler()
-        self.scheduler.add_job(self.get_new_order, 'interval', seconds=random.randint(30, 60))
+        self.scheduler.add_job(self.get_new_order, 'interval', seconds=random.randint(15, 30))
         self.scheduler.start()
 
     def add_player(self, sid: str) -> Callback:
