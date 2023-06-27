@@ -155,5 +155,6 @@ class Game:
         pass
 
     def set_window(self, state: bool):
+        print("set window to " + str(state))
         self.sio.emit('windows_updated', {'state': state}, room=self.id)
         pass
