@@ -169,6 +169,15 @@ def end_game(sid, data):
 
 
 @sio.event
+def set_window(sid, data):
+    game = games.get_player_game(sid)
+    if game is None:
+        return Callback(False).toJSON()
+    game.set_window(data["state"])
+    return Callback(True).toJSON()
+
+
+@sio.event
 def ping(sid, data):
     return Callback(True, "", "pong !").toJSON()
 

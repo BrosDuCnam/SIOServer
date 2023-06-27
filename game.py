@@ -153,3 +153,7 @@ class Game:
     def end_game(self):
         self.sio.emit('game_finished', {'score': self.score}, room=self.id)
         pass
+
+    def set_window(self, state: bool):
+        self.sio.emit('windows_updated', {'state': state}, room=self.id)
+        pass
