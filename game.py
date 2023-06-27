@@ -26,9 +26,9 @@ class Game:
 
         self.id = id
 
-        # self.scheduler = BackgroundScheduler()
-        # self.scheduler.add_job(self.get_new_order, 'interval', seconds=random.randint(15, 30))
-        # self.scheduler.start()
+        self.scheduler = BackgroundScheduler()
+        self.scheduler.add_job(self.get_new_order, 'interval', seconds=random.randint(15, 30))
+        self.scheduler.start()
 
     def add_player(self, sid: str) -> Callback:
         """
@@ -85,8 +85,8 @@ class Game:
             success = True
 
         if success:
-            # if self.driver is None and self.cook is None:
-            #     self.scheduler.shutdown()
+            if self.driver is None and self.cook is None:
+                self.scheduler.shutdown()
 
             self.sio.leave_room(sid, self.id)
             self.sio.emit('leave_game', {'message': self.id}, room=sid)
