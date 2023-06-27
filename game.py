@@ -85,8 +85,8 @@ class Game:
             success = True
 
         if success:
-            if self.driver is None and self.cook is None:
-                self.scheduler.shutdown()
+            # if self.driver is None and self.cook is None:
+            #     self.scheduler.shutdown()
 
             self.sio.leave_room(sid, self.id)
             self.sio.emit('leave_game', {'message': self.id}, room=sid)
