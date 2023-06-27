@@ -160,6 +160,15 @@ def apply_physic(sid, data):
 
 
 @sio.event
+def end_game(sid, data):
+    game = games.get_player_game(sid)
+    if game is None:
+        return Callback(False).toJSON()
+    game.end_game()
+    return Callback(True).toJSON()
+
+
+@sio.event
 def ping(sid, data):
     return Callback(True, "", "pong !").toJSON()
 

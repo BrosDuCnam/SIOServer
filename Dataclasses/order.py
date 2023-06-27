@@ -76,8 +76,6 @@ meals: list[dict[str, list[str] | str]] = [
             "steak",
             "fromage",
             "steak",
-            "fromage",
-            "steak",
         ]
     },
 

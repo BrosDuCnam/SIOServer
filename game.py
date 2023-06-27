@@ -52,7 +52,9 @@ class Game:
 
         if success:
             self.sio.enter_room(sid, self.id)
-            self.sio.emit('join_game', {'message': self.id}, room=sid)
+            self.sio.emit('join_game', {'message': self.id,
+                                        'type': player_type.name}
+                          , room=sid)
 
             # if it's the first player, get new order
             if self.driver is not None and self.cook is not None:
@@ -146,4 +148,8 @@ class Game:
 
     def apply_physic(self, vector):
         self.sio.emit('apply_physic', {'message': vector}, room=self.id)
+        pass
+
+    def end_game(self):
+        self.sio.emit('game_finished', {'score': self.score}, room=self.id)
         pass
