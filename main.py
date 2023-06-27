@@ -147,7 +147,7 @@ def toggle_horn(sid, data):
     if game is None:
         return Callback(False).toJSON()
     game.toggle_horn(data["state"])
-    return Callback(True).toJSON()
+    return Callback(True, "", "state changed to " + str(data["state"])).toJSON()
 
 
 @sio.event
