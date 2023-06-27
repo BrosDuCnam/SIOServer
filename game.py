@@ -53,8 +53,8 @@ class Game:
         if success:
             self.sio.enter_room(sid, self.id)
             self.sio.emit('join_game', {'message': self.id,
-                                        'type': player_type.name}
-                          , room=sid)
+                                        'type': player_type.name},
+                          room=sid)
 
             # if it's the first player, get new order
             if self.driver is not None and self.cook is not None:
