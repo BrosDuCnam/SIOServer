@@ -78,6 +78,7 @@ def chat(sid, data):
 
     game = games.get_player_game(sid)
     if game is not None:
+        print(data)
         game.broadcast(data)
         return Callback(True).toJSON()
     return Callback(False, "You are not in any game").toJSON()

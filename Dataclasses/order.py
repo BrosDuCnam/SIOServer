@@ -80,7 +80,25 @@ meals: list[dict[str, list[str] | str]] = [
             "steak",
         ]
     },
-
+    {
+        "type": "hamburger",
+        "name": "Le vege",
+        "meals": [
+            "fromage",
+            "tomate",
+            "onion",
+        ]
+    },
+    {
+        "type": "hamburger",
+        "name": "Le maxi bacon",
+        "meals": [
+            "fromage",
+            "bacon",
+            "bacon",
+            "onion",
+        ]
+    }
 ]
 
 
